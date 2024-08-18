@@ -1,0 +1,19 @@
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik-proxy
+    command:
+      - "--api.insecure=true"  # Optional: for dashboard access
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080" # Optional: Traefik Dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
