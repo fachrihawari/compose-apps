@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:v2.10
+    image: traefik:v3.1.2
     container_name: traefik-proxy
     command:
       - "--api.insecure=true"  # Optional: for dashboard access
