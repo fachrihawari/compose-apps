@@ -1,6 +1,7 @@
 services:
   nginx:
     image: nginx:1.27.1-alpine3.20
+    restart: always
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`nginx.hawari.dev`)"
