@@ -1,0 +1,13 @@
+services:
+  nginx:
+    image: nginx:1.27.1-alpine3.20
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`nginx.hawari.dev`)"
+      - "traefik.http.routers.nginx.entrypoints=web"
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
