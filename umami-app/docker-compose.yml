@@ -1,0 +1,27 @@
+services:
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    restart: always
+    expose:
+      - ${PORT}
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_TYPE: ${DATABASE_TYPE}
+      APP_SECRET: ${APP_SECRET}
+      PORT: ${PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`umami.hawari.dev`)"
+      - "traefik.http.routers.nginx.entrypoints=web"
+      - "traefik.http.services.nginx.loadbalancer.server.port=${PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:${PORT}/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
