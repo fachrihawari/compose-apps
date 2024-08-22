@@ -11,9 +11,9 @@ services:
       PORT: ${PORT}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`umami.hawari.dev`)"
-      - "traefik.http.routers.nginx.entrypoints=web"
-      - "traefik.http.services.nginx.loadbalancer.server.port=${PORT}"
+      - "traefik.http.routers.umami.rule=Host(`umami.hawari.dev`)"
+      - "traefik.http.routers.umami.entrypoints=web"
+      - "traefik.http.services.umami.loadbalancer.server.port=${PORT}"
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:${PORT}/api/heartbeat"]
       interval: 5s
