@@ -8,6 +8,11 @@ services:
       - "traefik.http.routers.nginx.entrypoints=web"
     networks:
       - traefik-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:80"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
   traefik-network:
