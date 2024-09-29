@@ -31,10 +31,32 @@ mongosh --eval '
       "root",
       "dbAdminAnyDatabase",
       "userAdminAnyDatabase",
-      "readWriteAnyDatabase"
+      "readWriteAnyDatabase",
+      "clusterAdmin"
     ]
   })
 '
 
-# Keep the container running after the script finishes
-wait
+# Kill the background MongoDB process
+echo "Stopping background MongoDB process..."
+pkill mongod
+
+# Wait for the process to fully stop and ensure it's actually stopped
+echo "Waiting for MongoDB to stop..."
+while pgrep mongod > /dev/null; do
+    sleep 1
+done
+
+# Double-check if MongoDB is really stopped
+if pgrep mongod > /dev/null; then
+    echo "Error: MongoDB did not stop properly. Exiting."
+    exit 1
+fi
+
+# Start MongoDB in the foreground to keep the container running
+echo "Starting MongoDB in the foreground..."
+exec mongod --replSet rs0 --bind_ip_all --keyFile /data/configdb/mongo-keyfile
+
+# Note: If the exec command fails, the script will continue here
+echo "Error: MongoDB failed to start in the foreground. Exiting."
+exit 1
