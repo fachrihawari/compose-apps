@@ -3,15 +3,17 @@ services:
     image: mongo:7.0.14
     restart: always
     container_name: mongodb-db
+    command: bash -c "chmod +x /scripts/init-replica.sh && /scripts/init-replica.sh"
     environment:
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - mongodb-db-data:/data/db
-      - ./init:/docker-entrypoint-initdb.d
+      - ./scripts:/scripts
+      - ./mongo-keyfile:/data/configdb/mongo-keyfile  # Mount the keyfile
     healthcheck:
-      test: ["CMD-SHELL", "echo 'db.runCommand(\"ping\").ok' | mongosh localhost:27017/test --quiet"]
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'rs.status().ok && db.runCommand({ ping: 1 }).ok' || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
