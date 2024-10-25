@@ -1,0 +1,24 @@
+services:
+  soketi:
+    image: quay.io/soketi/soketi:1.4-16-debian
+    restart: always
+    expose:
+      - ${PORT}
+    environment:
+      PORT: ${PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.soketi.rule=Host(`soketi.hawari.dev`)"
+      - "traefik.http.routers.soketi.entrypoints=web"
+      - "traefik.http.services.soketi.loadbalancer.server.port=${PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:${PORT}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
