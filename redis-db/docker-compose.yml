@@ -1,0 +1,20 @@
+services:
+  db:
+    image: bitnami/redis:7.4.1
+    restart: always
+    expose:
+      - ${REDIS_PORT_NUMBER}
+    environment:
+      REDIS_PORT_NUMBER: ${REDIS_PORT_NUMBER}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -p $REDIS_PORT_NUMBER -a '$REDIS_PASSWORD'  ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
