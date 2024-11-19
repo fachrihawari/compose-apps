@@ -2,6 +2,7 @@ services:
   db:
     image: bitnami/redis:7.4.1
     restart: always
+    container_name: redis-db
     expose:
       - ${REDIS_PORT_NUMBER}
     environment:
