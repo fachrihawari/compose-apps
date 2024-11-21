@@ -16,7 +16,7 @@ services:
       - "traefik.http.services.umami.loadbalancer.server.port=${PORT}"
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:${PORT}/api/heartbeat"]
-      interval: 5s
+      interval: 3600s
       timeout: 5s
       retries: 5
     networks:
