@@ -9,6 +9,7 @@ services:
       - "--providers.docker.exposedbydefault=false" # Don't exposed any container to Traefik unless explicitly enabled
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.letsencryptresolver.acme.email=$TLS_EMAIL"
       - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
