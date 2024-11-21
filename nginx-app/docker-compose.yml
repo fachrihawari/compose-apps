@@ -1,18 +1,14 @@
 services:
   nginx:
     image: nginx:1.27.1-alpine3.20
-    restart: always
+    container_name: nginx
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`nginx.hawari.dev`)"
-      - "traefik.http.routers.nginx.entrypoints=web"
+      - "traefik.http.routers.nginx.entrypoints=websecure"
+      - "traefik.http.routers.nginx.tls.certresolver=letsencryptresolver"
     networks:
       - traefik-network
-    healthcheck:
-      test: ["CMD-SHELL", "curl http://localhost:80"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
 networks:
   traefik-network:

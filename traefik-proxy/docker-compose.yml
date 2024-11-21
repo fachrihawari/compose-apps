@@ -3,12 +3,31 @@ services:
     image: traefik:v3.1.2
     restart: always
     command:
-      - "--api.insecure=true"  # Optional: for dashboard access
-      - "--providers.docker=true"
+      - "--api.insecure=false"   # Disable insecure dashboard access
+      - "--providers.docker=true" # Enable docker provider
+      - "--providers.docker.exposedbydefault=false" # Don't exposed any container to Traefik unless explicitly enabled
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencryptresolver.acme.email=$TLS_EMAIL"
+      - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`$DOMAIN`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.api.middlewares=dashboard-auth"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=$BASIC_AUTH"
+    environment:
+      BASIC_AUTH: ${BASIC_AUTH}
+      TLS_EMAIL: ${TLS_EMAIL}
+      DOMAIN: ${DOMAIN}
     ports:
       - "80:80"
-      - "8080:8080" # Optional: Traefik Dashboard
+      - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
