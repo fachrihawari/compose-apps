@@ -14,7 +14,7 @@ services:
       - ./mongo-keyfile:/data/configdb/mongo-keyfile  # Mount the keyfile
     healthcheck:
       test: ["CMD-SHELL", "mongosh -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --quiet --eval 'rs.status().ok && db.runCommand({ ping: 1 }).ok' || exit 1"]
-      interval: 3600s
+      interval: 60s
       timeout: 5s
       retries: 5
     networks:

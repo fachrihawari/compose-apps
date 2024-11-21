@@ -13,7 +13,7 @@ services:
       - "traefik.http.services.soketi.loadbalancer.server.port=${PORT}"
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:${PORT}"]
-      interval: 3600s
+      interval: 60s
       timeout: 5s
       retries: 5
     networks:
