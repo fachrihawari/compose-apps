@@ -2,6 +2,7 @@ services:
   traefik:
     image: traefik:v3.1.2
     restart: always
+    container_name: traefik-proxy
     command:
       - "--api.insecure=false"   # Disable insecure dashboard access
       - "--providers.docker=true" # Enable docker provider
