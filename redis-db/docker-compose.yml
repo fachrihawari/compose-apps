@@ -3,12 +3,10 @@ services:
     image: bitnami/redis:7.4.1
     restart: always
     container_name: redis-db
-    expose:
-      - 6379
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -p 6379 -a '$REDIS_PASSWORD'  ping | grep PONG"]
+      test: ["CMD-SHELL", "redis-cli -a '$REDIS_PASSWORD'  ping | grep PONG"]
       start_period: 60s
       interval: 3600s
       timeout: 5s
