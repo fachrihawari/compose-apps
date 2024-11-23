@@ -4,8 +4,8 @@ services:
     restart: always
     container_name: mongodb-db
     command: bash -c "chmod +x /scripts/init-replica.sh && /scripts/init-replica.sh"
-    expose:
-      - 27017
+    ports:
+      - 27017:27017
     environment:
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
