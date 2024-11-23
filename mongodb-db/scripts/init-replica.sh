@@ -17,25 +17,25 @@ echo "Initiating the replica set..."
 mongosh --eval 'rs.initiate({
   _id: "rs0",
   members: [
-    { _id: 0, host: "localhost:27017" }
+    { _id: 0, host: "127.0.0.1:27017" }
   ]
 })'
 
 # Add root user with additional roles
 echo "Adding root user with additional roles..."
-mongosh --eval '
-  db.getSiblingDB("admin").createUser({
-    user: process.env.MONGO_INITDB_ROOT_USERNAME,
-    pwd: process.env.MONGO_INITDB_ROOT_PASSWORD,
+mongosh --eval "
+  db.getSiblingDB('admin').createUser({
+    user: '${MONGO_INITDB_ROOT_USERNAME}',
+    pwd: '${MONGO_INITDB_ROOT_PASSWORD}',
     roles: [
-      "root",
-      "dbAdminAnyDatabase",
-      "userAdminAnyDatabase",
-      "readWriteAnyDatabase",
-      "clusterAdmin"
+      'root',
+      'dbAdminAnyDatabase',
+      'userAdminAnyDatabase',
+      'readWriteAnyDatabase',
+      'clusterAdmin'
     ]
   })
-'
+"
 
 # Kill the background MongoDB process
 echo "Stopping background MongoDB process..."
@@ -44,6 +44,7 @@ pkill mongod
 # Wait for the process to fully stop and ensure it's actually stopped
 echo "Waiting for MongoDB to stop..."
 while pgrep mongod > /dev/null; do
+    echo "Waiting for MongoDB to stop again..."
     sleep 1
 done
 
