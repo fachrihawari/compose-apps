@@ -3,6 +3,8 @@ services:
     image: bitnami/redis:7.4.1
     restart: always
     container_name: redis-db
+    ports:
+      - 6379:6379 # publish default redis port
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     healthcheck:
