@@ -25,9 +25,6 @@ services:
     networks:
       - traefik-network
 
-volumes:
-  letsencrypt:
-
 networks:
   traefik-network:
     external: true
