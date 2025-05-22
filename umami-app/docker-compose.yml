@@ -12,8 +12,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.umami.rule=Host(`umami.hawari.dev`)"
-      - "traefik.http.routers.umami.entrypoints=websecure"
-      - "traefik.http.routers.umami.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.umami.entrypoints=web"
       - "traefik.http.services.umami.loadbalancer.server.port=${PORT}"
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:${PORT}/api/heartbeat"]

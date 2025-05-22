@@ -5,8 +5,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`nginx.hawari.dev`)"
-      - "traefik.http.routers.nginx.entrypoints=websecure"
-      - "traefik.http.routers.nginx.tls.certresolver=letsencryptresolver"
+      - "traefik.http.routers.nginx.entrypoints=web"
     networks:
       - traefik-network
 
